@@ -16,6 +16,7 @@ peers_p2p_port:
   node1: 9000
   node2: 9000
   node3: 9000
+node_instance: 2
 max_pool: 20
 log_level: 3
 batch_size: 200

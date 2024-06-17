@@ -3,60 +3,61 @@ package qcdag
 import (
 	"crypto/ed25519"
 	"encoding/binary"
-	"github.com/gitzhang10/BFT/config"
-	"github.com/gitzhang10/BFT/conn"
-	"github.com/gitzhang10/BFT/sign"
-	"github.com/hashicorp/go-hclog"
-	"go.dedis.ch/kyber/v3/share"
 	"math"
 	"reflect"
 	"strconv"
 	"sync"
 	"time"
+
+	"github.com/gitzhang10/BFT/config"
+	"github.com/gitzhang10/BFT/conn"
+	"github.com/gitzhang10/BFT/sign"
+	"github.com/hashicorp/go-hclog"
+	"go.dedis.ch/kyber/v3/share"
 )
 
 type Node struct {
-	name                   string
-	lock                   sync.RWMutex
-	dag                    map[uint64]map[string]*Block // map from round to sender to block
-	pendingBlocks          map[uint64]map[string]*Block
-	chain                  *Chain
-	leader                 map[uint64]string // map from round to leader
-	done				   map[uint64]map[string]*Done // map from round to sender to Done
-	elect                  map[uint64]map[string][]byte // map from round to sender to sig
-	round                  uint64 // current round
-	moveRound              map[uint64]int
-	logger                 hclog.Logger
+	name          string
+	lock          sync.RWMutex
+	dag           map[uint64]map[string]*Block // map from round to sender to block
+	pendingBlocks map[uint64]map[string]*Block
+	chain         *Chain
+	leader        map[uint64]string            // map from round to leader
+	done          map[uint64]map[string]*Done  // map from round to sender to Done
+	elect         map[uint64]map[string][]byte // map from round to sender to sig
+	round         uint64                       // current round
+	moveRound     map[uint64]int
+	logger        hclog.Logger
 
-	nodeNum                int
-	quorumNum              int
+	nodeNum   int
+	quorumNum int
 
-	clusterAddr            map[string]string // map from name to address
-	clusterPort            map[string]int    // map from name to p2pPort
-	clusterAddrWithPorts   map[string]uint8  // map from addr:port to index
-	isFaulty               bool // true indicate this node is faulty node
+	clusterAddr          map[string]string // map from name to address
+	clusterPort          map[string]int    // map from name to p2pPort
+	clusterAddrWithPorts map[string]uint8  // map from addr:port to index
+	isFaulty             bool              // true indicate this node is faulty node
 
-	maxPool                int
-	trans                  *conn.NetworkTransport
-	batchSize              int
-	roundNumber            uint64 // the number of rounds the protocol will run
+	maxPool     int
+	trans       *conn.NetworkTransport
+	batchSize   int
+	roundNumber uint64 // the number of rounds the protocol will run
 
 	//Used for ED25519 signature
-	publicKeyMap           map[string]ed25519.PublicKey
-	privateKey             ed25519.PrivateKey
+	publicKeyMap map[string]ed25519.PublicKey
+	privateKey   ed25519.PrivateKey
 
 	//Used for threshold signature
-	tsPublicKey            *share.PubPoly
-	tsPrivateKey           *share.PriShare
+	tsPublicKey  *share.PubPoly
+	tsPrivateKey *share.PriShare
 
-	reflectedTypesMap      map[uint8]reflect.Type
+	reflectedTypesMap map[uint8]reflect.Type
 
-	nextRound              chan uint64     // inform that the protocol can enter to next view
-	leaderElect            map[uint64]bool // mark whether have elect a leader in a round
+	nextRound   chan uint64     // inform that the protocol can enter to next view
+	leaderElect map[uint64]bool // mark whether have elect a leader in a round
 
-	evaluation             []int64 // store the latency of every blocks
-	commitTime             []int64 // the time that the leader is committed
-	cbc                    *CBC
+	evaluation []int64 // store the latency of every blocks
+	commitTime []int64 // the time that the leader is committed
+	cbc        *CBC
 }
 
 func NewNode(conf *config.Config) *Node {
@@ -106,7 +107,7 @@ func NewNode(conf *config.Config) *Node {
 
 	n.nextRound = make(chan uint64, 1)
 	n.leaderElect = make(map[uint64]bool)
-    return &n
+	return &n
 }
 
 // start the protocol and make it run target rounds
@@ -119,7 +120,7 @@ func (n *Node) RunLoop() {
 			break
 		}
 		go n.broadcastBlock(currentRound)
-		if currentRound % 2 == 0 {
+		if currentRound%2 == 0 {
 			go n.broadcastElect(currentRound)
 		}
 		select {
@@ -127,18 +128,18 @@ func (n *Node) RunLoop() {
 		}
 	}
 	// wait all blocks are committed
-	time.Sleep(5*time.Second)
+	time.Sleep(5 * time.Second)
 
 	n.lock.Lock()
 	end := n.commitTime[len(n.commitTime)-1]
-	pastTime := float64(end - start)/1e9
+	pastTime := float64(end-start) / 1e9
 	blockNum := len(n.evaluation)
-	throughPut := float64(blockNum * n.batchSize)/pastTime
+	throughPut := float64(blockNum*n.batchSize) / pastTime
 	totalTime := int64(0)
 	for _, t := range n.evaluation {
 		totalTime += t
 	}
-	latency := float64(totalTime)/1e9/float64(blockNum)
+	latency := float64(totalTime) / 1e9 / float64(blockNum)
 	n.lock.Unlock()
 
 	n.logger.Info("the average", "latency", latency, "throughput", throughPut)
@@ -200,13 +201,13 @@ func (n *Node) tryToUpdateDAG(block *Block) {
 			n.dag[block.Round] = make(map[string]*Block)
 		}
 		n.dag[block.Round][block.Sender] = block
-		if block.Round % 2 == 0 {
+		if block.Round%2 == 0 {
 			n.moveRound[block.Round]++
 			go n.tryToNextRound(block.Round)
 		} else {
 			n.tryToCommitLeader(block.Round)
 		}
-		go n.tryToUpdateDAGFromPending(block.Round+1)
+		go n.tryToUpdateDAGFromPending(block.Round + 1)
 	} else {
 		n.storePendingBlocks(block)
 	}
@@ -253,7 +254,7 @@ func (n *Node) tryToElectLeader(round uint64) {
 		leaderName := "node" + strconv.Itoa(leaderId)
 		// elect the leader in last round and try to commit
 		n.leader[round-1] = leaderName
-		n.tryToCommitLeader(round-1)
+		n.tryToCommitLeader(round - 1)
 	}
 }
 
@@ -269,7 +270,7 @@ func (n *Node) tryToNextRound(round uint64) {
 		go func() {
 			n.nextRound <- round + 1
 		}()
-		go n.tryToNextRound(round+1)
+		go n.tryToNextRound(round + 1)
 	}
 }
 
@@ -303,7 +304,7 @@ func (n *Node) tryToCommitAncestorLeader(round uint64) {
 	if round < 2 {
 		return
 	}
-	if round - 2 <= n.chain.round {
+	if round-2 <= n.chain.round {
 		return
 	}
 	validLeader := n.findValidLeader(round)
@@ -335,7 +336,7 @@ func (n *Node) findValidLeader(round uint64) map[uint64]string {
 	for {
 		templeBlocks[r-1] = make(map[string]*Block)
 		for _, b := range templeBlocks[r] {
-			if b.Round % 2 == 1 && b.Sender == n.leader[b.Round] {
+			if b.Round%2 == 1 && b.Sender == n.leader[b.Round] {
 				validLeader[b.Round] = b.Sender
 			}
 			for sender := range b.PreviousHash {

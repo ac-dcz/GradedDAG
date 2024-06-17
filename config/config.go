@@ -9,7 +9,6 @@ import (
 	"encoding/hex"
 	"errors"
 	"strconv"
-	"strings"
 
 	"github.com/gitzhang10/BFT/sign"
 	"github.com/spf13/viper"
@@ -62,13 +61,7 @@ func New(name string, maxPool int, clusterAddr map[string]string, clusterPort ma
 func LoadConfig(configPrefix, configName string) (*Config, error) {
 	viperConfig := viper.New()
 
-	// for environment variables
-	viperConfig.SetEnvPrefix(configPrefix)
-	viperConfig.AutomaticEnv()
-	replacer := strings.NewReplacer(".", "_")
-	viperConfig.SetEnvKeyReplacer(replacer)
-	viperConfig.SetConfigName(configName)
-	viperConfig.AddConfigPath("./")
+	viperConfig.SetConfigFile(configName)
 	err := viperConfig.ReadInConfig()
 	if err != nil {
 		return nil, err

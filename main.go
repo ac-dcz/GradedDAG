@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"flag"
 	"fmt"
 	"time"
 
@@ -11,15 +12,14 @@ import (
 
 var conf *config.Config
 var err error
+var filename = flag.String("config", "config.yaml", "configure file")
 
-func init() {
-	conf, err = config.LoadConfig("", "config")
+func main() {
+	flag.Parse()
+	conf, err = config.LoadConfig("", *filename)
 	if err != nil {
 		panic(err)
 	}
-}
-
-func main() {
 	if conf.Protocol == "qcdag" {
 		startQCDAG()
 	} else {
