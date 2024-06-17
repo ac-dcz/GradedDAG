@@ -1,0 +1,42 @@
+node starts the QCDAG!
+2024-06-17T11:40:18.466+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=1 block-proposer=node0
+2024-06-17T11:40:19.316+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=3 block-proposer=node1
+2024-06-17T11:40:21.241+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=5 block-proposer=node1
+2024-06-17T11:40:22.018+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=7 block-proposer=node1
+2024-06-17T11:40:22.708+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=9 block-proposer=node0
+2024-06-17T11:40:23.591+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=11 block-proposer=node0
+2024-06-17T11:40:24.830+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=13 block-proposer=node2
+2024-06-17T11:40:26.083+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=17 block-proposer=node3
+2024-06-17T11:40:26.641+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=19 block-proposer=node1
+2024-06-17T11:40:27.212+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=21 block-proposer=node2
+2024-06-17T11:40:27.710+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=23 block-proposer=node2
+2024-06-17T11:40:28.297+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=25 block-proposer=node1
+2024-06-17T11:40:28.789+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=27 block-proposer=node1
+2024-06-17T11:40:29.316+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=29 block-proposer=node3
+2024-06-17T11:40:29.847+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=31 block-proposer=node0
+2024-06-17T11:40:30.369+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=33 block-proposer=node0
+2024-06-17T11:40:30.880+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=35 block-proposer=node3
+2024-06-17T11:40:31.405+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=37 block-proposer=node0
+2024-06-17T11:40:31.926+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=39 block-proposer=node0
+2024-06-17T11:40:32.436+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=41 block-proposer=node0
+2024-06-17T11:40:32.980+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=43 block-proposer=node1
+2024-06-17T11:40:33.576+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=45 block-proposer=node3
+2024-06-17T11:40:34.079+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=47 block-proposer=node1
+2024-06-17T11:40:34.603+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=49 block-proposer=node0
+2024-06-17T11:40:35.096+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=51 block-proposer=node1
+2024-06-17T11:40:35.676+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=53 block-proposer=node0
+2024-06-17T11:40:36.169+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=55 block-proposer=node1
+2024-06-17T11:40:36.702+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=57 block-proposer=node1
+2024-06-17T11:40:37.222+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=59 block-proposer=node1
+2024-06-17T11:40:37.740+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=61 block-proposer=node2
+2024-06-17T11:40:38.259+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=63 block-proposer=node2
+2024-06-17T11:40:38.749+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=65 block-proposer=node0
+2024-06-17T11:40:39.275+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=67 block-proposer=node3
+2024-06-17T11:40:39.748+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=69 block-proposer=node0
+2024-06-17T11:40:40.265+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=71 block-proposer=node1
+2024-06-17T11:40:40.762+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=73 block-proposer=node0
+2024-06-17T11:40:41.280+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=75 block-proposer=node2
+2024-06-17T11:40:41.800+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=77 block-proposer=node1
+2024-06-17T11:40:42.299+0800 [INFO]  QCDAG-node: commit the leader block: node=node1 round=79 block-proposer=node0
+2024-06-17T11:40:47.419+0800 [INFO]  QCDAG-node: the average: latency=0.8736931569068965 throughput=8539.898545680613
+2024-06-17T11:40:47.419+0800 [INFO]  QCDAG-node: the total commit: block number=290 time=27.166599083

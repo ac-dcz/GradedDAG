@@ -1,0 +1,20 @@
+IPs:
+  node0: 47.91.72.198
+  node1: 47.80.10.97
+  node2: 47.237.8.133
+  node3: 47.90.165.146
+batch_size: 800
+duration: 30
+faulty_number: 0
+log_level: 3
+max_pool: 20
+node_instance: 1
+nodes:
+- 4
+peers_p2p_port:
+  node0: 8000
+  node1: 8000
+  node2: 8000
+  node3: 8000
+protocol: qcdag
+round: 80
